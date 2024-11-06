@@ -1,4 +1,3 @@
-
 const renderer = new Renderer('canvas', 'tileset.png', 8, 12, 1);
 
 // Function to render corners
@@ -55,36 +54,35 @@ function renderButtons() {
   renderer.renderSprite('w', 50, 16);
 }
 
-function clear(){
-  for (let i = 0; i < 94; i++){
-    for (let j = 0; j < 33; j++){
+function clear() {
+  for (let i = 0; i < 94; i++) {
+    for (let j = 0; j < 33; j++) {
       renderer.renderSprite('void', i, j);
     }
   }
   renderCorners();
 }
 
-
 function renderSea() {
-  for (let i = 0; i < 94; i++){
-    for (let j = 0; j < 33; j++){
+  for (let i = 0; i < 94; i++) {
+    for (let j = 0; j < 33; j++) {
       renderer.renderSprite('sea', i, j);
     }
   }
   renderCorners();
 }
 
-
 function started() {
-  console.log('Game started!');
+  console.log('Simulation started!');
   clear();
   renderSea();
   startWaveEngine();
 }
 
+let activeWaves = []; // Store all active waves
 
 function startWaveEngine() {
-  const delay = 500;
+  const delay = 400;
 
   function generateWave() {
     // Select a random starting point along the borders
@@ -96,24 +94,40 @@ function startWaveEngine() {
     else { x = Math.floor(Math.random() * 94); y = 32; } // Bottom edge
 
     let waveRadius = 1;
+    const waveId = `wave_${new Date().getTime()}_${Math.random()}`; // Unique identifier for the wave
+    activeWaves.push({ id: waveId, x, y, radius: waveRadius, cycle: Math.random() }); // Store wave with unique cycle identifier
+
     const waveInterval = setInterval(() => {
-      expandWave(x, y, waveRadius);
+      expandWave(x, y, waveRadius, waveId);
       waveRadius++;
-      if (waveRadius > 15) clearInterval(waveInterval);
+      if (waveRadius > 15) clearInterval(waveInterval); // Stop after 15 radius expansion
     }, delay);
   }
 
-
-  function expandWave(centerX, centerY, radius) {
+  function expandWave(centerX, centerY, radius, waveId) {
+    // Control wave "thickness" by adjusting the condition that defines the area of the wave.
     for (let dx = -radius; dx <= radius; dx++) {
       for (let dy = -radius; dy <= radius; dy++) {
+        // Calculate the diagonal distance to create a thinner wave
         const distance = Math.sqrt(dx * dx + dy * dy);
         if (distance > radius - 1 && distance <= radius) {
           const x = centerX + dx;
           const y = centerY + dy;
+
           if (x >= 0 && x < 94 && y >= 0 && y < 33) {
+            // Check for collision with waves from different cycles
+            // Doesn't work, needs fix IDK
+            for (let wave of activeWaves) {
+              if (wave.id !== waveId && wave.cycle !== activeWaves.find(w => w.id === waveId).cycle) {
+                const distanceToWave = Math.sqrt(Math.pow(wave.x - x, 2) + Math.pow(wave.y - y, 2));
+                if (distanceToWave <= 2) { // Collision threshold (2 block distance)
+                  renderer.renderSprite('lightMist', x, y); // Show light mist on collision
+                  setTimeout(() => renderer.renderSprite('sea', x, y), 1500); // Revert to sea after 1.5 seconds
+                }
+              }
+            }
             renderer.renderSprite('wave', x, y);
-            setTimeout(() => renderer.renderSprite('sea', x, y), delay * 3);
+            setTimeout(() => renderer.renderSprite('sea', x, y), 1500); // Revert to sea after a delay
           }
         }
       }
@@ -124,12 +138,11 @@ function startWaveEngine() {
   setInterval(generateWave, delay * 10); // New wave every 5 seconds
 }
 
-
 renderer.initialize(() => {
   renderLogo();
   renderCredits();
   renderButtons();
-  renderCorners();
+  renderCorners(); // Always render trunks in corners
 
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Enter' || event.key === ' ') {

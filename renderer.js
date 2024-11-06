@@ -92,6 +92,7 @@ const spriteDefinitions = [
   { x: 15, y: 4, name: 'trunk', bgColor: '#000000', spriteColor: '#8a5500' },
   { x: 7, y: 15, name: 'sea', bgColor: '#000000', spriteColor: '#0400ff' },
   { x: 14, y: 7, name: 'wave', bgColor: '#000000', spriteColor: '#FFFFFF' },
+  { x: 0, y: 11, name: 'lightMist', bgColor: '#000000', spriteColor: '#FFFFFF' },
 
 
 
