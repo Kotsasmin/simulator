@@ -1,4 +1,4 @@
-// Set up the renderer
+
 const renderer = new Renderer('canvas', 'tileset.png', 8, 12, 1);
 
 // Function to render corners
@@ -56,30 +56,72 @@ function renderButtons() {
 }
 
 function clear(){
-
-
-    for (let i =0; i<94; i++){
-      for (let j=0; j<33; j++){
-        renderer.renderSprite('void', i, j);
-      }
+  for (let i = 0; i < 94; i++){
+    for (let j = 0; j < 33; j++){
+      renderer.renderSprite('void', i, j);
     }
-    renderCorners();
+  }
+  renderCorners();
+}
 
 
+function renderSea() {
+  for (let i = 0; i < 94; i++){
+    for (let j = 0; j < 33; j++){
+      renderer.renderSprite('sea', i, j);
+    }
+  }
+  renderCorners();
 }
 
 
 function started() {
   console.log('Game started!');
   clear();
+  renderSea();
+  startWaveEngine();
+}
 
-  //generating see
-  for (let i =0; i<94; i++){
-    for (let j=0; j<33; j++){
-      renderer.renderSprite('sea', i, j);
+
+function startWaveEngine() {
+  const delay = 500;
+
+  function generateWave() {
+    // Select a random starting point along the borders
+    let x, y;
+    const edge = Math.floor(Math.random() * 4); // Choose a random edge
+    if (edge === 0) { x = 0; y = Math.floor(Math.random() * 33); } // Left edge
+    else if (edge === 1) { x = 93; y = Math.floor(Math.random() * 33); } // Right edge
+    else if (edge === 2) { x = Math.floor(Math.random() * 94); y = 0; } // Top edge
+    else { x = Math.floor(Math.random() * 94); y = 32; } // Bottom edge
+
+    let waveRadius = 1;
+    const waveInterval = setInterval(() => {
+      expandWave(x, y, waveRadius);
+      waveRadius++;
+      if (waveRadius > 15) clearInterval(waveInterval);
+    }, delay);
+  }
+
+
+  function expandWave(centerX, centerY, radius) {
+    for (let dx = -radius; dx <= radius; dx++) {
+      for (let dy = -radius; dy <= radius; dy++) {
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance > radius - 1 && distance <= radius) {
+          const x = centerX + dx;
+          const y = centerY + dy;
+          if (x >= 0 && x < 94 && y >= 0 && y < 33) {
+            renderer.renderSprite('wave', x, y);
+            setTimeout(() => renderer.renderSprite('sea', x, y), delay * 3);
+          }
+        }
+      }
     }
   }
-  renderCorners();
+
+  // Keep generating waves in intervals
+  setInterval(generateWave, delay * 10); // New wave every 5 seconds
 }
 
 
@@ -89,9 +131,7 @@ renderer.initialize(() => {
   renderButtons();
   renderCorners();
 
-
   document.addEventListener('keydown', (event) => {
-
     if (event.key === 'Enter' || event.key === ' ') {
       started();
     }
