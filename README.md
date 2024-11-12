@@ -30,14 +30,6 @@ To set up and run the ASCII CP437 wave generator locally, follow these steps:
    First, clone the repository to your local machine:
    ```bash
    git clone https://github.com/Kotsasmin/simulator.git
-   cd ascii-cp437-wave-generator
-   ```
-
-2. **Install Dependencies**
-
-   Install the required dependencies using npm:
-   ```bash
-   npm install
    ```
 
 ### Running the Server
