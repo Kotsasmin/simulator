@@ -30,6 +30,7 @@ To set up and run the ASCII CP437 wave generator locally, follow these steps:
    First, clone the repository to your local machine:
    ```bash
    git clone https://github.com/Kotsasmin/simulator.git
+   cd simulator
    ```
 
 ### Running the Server
