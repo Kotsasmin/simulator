@@ -1,6 +1,6 @@
 # ASCII CP437 Wave Generator
 
-This is a simple 2D wave generator using ASCII characters from the CP437 character set. The project is designed to display a dynamic wave pattern generated using mathematical functions and ASCII art.
+This is a very simple 2D wave generator using ASCII characters from the CP437 character set. The project is designed to display a dynamic wave pattern generated using mathematical functions and ASCII art.
 
 **Note:** The development of this project has been stopped. Feel free to explore and modify it as you wish, but there will be no future updates.
 
