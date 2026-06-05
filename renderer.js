@@ -89,14 +89,26 @@ const spriteDefinitions = [
   //Nature
   { x: 12, y: 2, name: 'grass', bgColor: '#000000', spriteColor: '#00ff26' },
   { x: 7, y: 2, name: 'tallGrass', bgColor: '#000000', spriteColor: '#04d123' },
+  { x: 2, y: 2, name: 'flowerWhite', bgColor: '#000000', spriteColor: '#ffffff' },
+  { x: 10, y: 2, name: 'flowerYellow', bgColor: '#000000', spriteColor: '#ffff00' },
+  { x: 5, y: 0, name: 'tree1', bgColor: '#000000', spriteColor: '#00cc00' },
+  { x: 6, y: 0, name: 'tree2', bgColor: '#000000', spriteColor: '#00aa00' },
+  { x: 6, y: 6, name: 'shrub1', bgColor: '#000000', spriteColor: '#00cc00' },
+  { x: 7, y: 14, name: 'shrub2', bgColor: '#000000', spriteColor: '#009900' },
+  { x: 14, y: 1, name: 'mountain', bgColor: '#000000', spriteColor: '#888888' },
+  { x: 14, y: 6, name: 'hill', bgColor: '#000000', spriteColor: '#666666' },
+  { x: 0, y: 3, name: 'boulder1', bgColor: '#000000', spriteColor: '#aa7700' },
+  { x: 15, y: 7, name: 'boulder2', bgColor: '#000000', spriteColor: '#aaaaaa' },
+  { x: 12, y: 14, name: 'boulder3', bgColor: '#000000', spriteColor: '#ffffff' },
   { x: 15, y: 4, name: 'trunk', bgColor: '#000000', spriteColor: '#8a5500' },
   { x: 7, y: 15, name: 'sea', bgColor: '#000000', spriteColor: '#0400ff' },
   { x: 14, y: 7, name: 'wave', bgColor: '#000000', spriteColor: '#FFFFFF' },
   { x: 0, y: 11, name: 'lightMist', bgColor: '#000000', spriteColor: '#FFFFFF' },
-
-
-
-
+  { x: 14, y: 7, name: 'waveCyan', bgColor: '#000000', spriteColor: '#00ffff' },
+  { x: 14, y: 7, name: 'waveLightBlue', bgColor: '#000000', spriteColor: '#5555ff' },
+  { x: 14, y: 7, name: 'waveBlue', bgColor: '#000000', spriteColor: '#0000aa' },
+  { x: 0, y: 11, name: 'foamGrey', bgColor: '#000000', spriteColor: '#aaaaaa' },
+  { x: 2, y: 11, name: 'sand', bgColor: '#000000', spriteColor: '#ffff55' },
 ];
 
 class Renderer {
@@ -117,8 +129,16 @@ class Renderer {
   initialize(callback) {
     this.tilesetImage.onload = () => {
       this.defineSprites(); 
+      this.resize();
       callback();
     };
+  }
+
+  resize() {
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = window.innerHeight;
+    this.gridWidth = Math.floor(window.innerWidth / (this.tileWidth * this.scaleFactor));
+    this.gridHeight = Math.floor(window.innerHeight / (this.tileHeight * this.scaleFactor));
   }
 
   defineSprites() {
