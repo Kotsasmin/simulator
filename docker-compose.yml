@@ -1,0 +1,12 @@
+services:
+  simulator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: simulator
+    restart: unless-stopped
+    ports:
+      - "80"
+    environment:
+      - SERVICE_FQDN_SIMULATOR=simulator.kotsasmin.net
+      - SERVICE_URL_SIMULATOR=https://simulator.kotsasmin.net
