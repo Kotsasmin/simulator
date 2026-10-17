@@ -47,4 +47,4 @@ This will start a local server at `http://localhost:3000` where you can view the
 
 ## License
 
-This project is provided for personal viewing and learning purposes only. The code may not be reproduced, modified, or used for any commercial purposes. Unauthorized commercial use, including but not limited to resale or redistribution for profit, is strictly prohibited.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
